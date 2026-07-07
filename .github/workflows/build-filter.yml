@@ -1,0 +1,56 @@
+name: Build trimmed AdGuard DNS filter
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */12 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out this repo
+        uses: actions/checkout@v4
+
+      - name: Clone upstream AdGuard DNS filter
+        run: |
+          rm -rf upstream
+          git clone --depth=1 https://github.com/AdguardTeam/AdGuardSDNSFilter.git upstream
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install upstream dependencies
+        working-directory: upstream
+        run: yarn install --frozen-lockfile
+
+      - name: Remove regional/language sources
+        run: node trim-config.mjs
+
+      - name: Build trimmed filter
+        working-directory: upstream
+        run: |
+          ./node_modules/.bin/hostlist-compiler \
+            -c configuration.noregion.json \
+            -o filter.txt \
+            --verbose
+
+      - name: Publish generated filter
+        run: |
+          mkdir -p public
+          cp upstream/filter.txt public/filter.txt
+          date -u +"Built at %Y-%m-%dT%H:%M:%SZ" > public/build.txt
+
+      - name: Commit updated filter
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/filter.txt public/build.txt
+          git commit -m "Update generated AdGuard DNS filter" || exit 0
+          git push
