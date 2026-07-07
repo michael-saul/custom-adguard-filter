@@ -3,7 +3,7 @@ name: Build trimmed AdGuard DNS filter
 on:
   workflow_dispatch:
   schedule:
-    - cron: "17 */12 * * *"
+    - cron: "15 */2 * * *"
 
 permissions:
   contents: write
