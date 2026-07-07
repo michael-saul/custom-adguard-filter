@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Check out this repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Clone upstream AdGuard DNS filter
         run: |
@@ -22,9 +22,12 @@ jobs:
           git clone --depth=1 https://github.com/AdguardTeam/AdGuardSDNSFilter.git upstream
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: "24"
+
+      - name: Enable Corepack
+        run: corepack enable
 
       - name: Install upstream dependencies
         working-directory: upstream
