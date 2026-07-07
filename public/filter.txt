@@ -3,7 +3,7 @@
 ! Description: AdGuard DNS filter rebuilt from upstream configuration with regional/language-specific sources removed.
 ! Homepage: https://github.com/AdguardTeam/AdguardSDNSFilter
 ! License: https://github.com/AdguardTeam/AdguardSDNSFilter/blob/master/LICENSE
-! Last modified: 2026-07-07T03:33:29.094Z
+! Last modified: 2026-07-07T03:37:45.989Z
 !
 ! Compiled by @adguard/hostlist-compiler v2.1.0
 !
