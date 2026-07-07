@@ -1,6 +1,6 @@
 import fs from "node:fs";
 
-const cfg = JSON.parse(fs.readFileSync("configuration.json", "utf8"));
+const cfg = JSON.parse(fs.readFileSync("upstream/configuration.json", "utf8"));
 
 const regionalPatterns = [
   /spanish|portuguese/i,
@@ -33,7 +33,7 @@ cfg.sources = cfg.sources.filter((source) => {
   return !shouldRemove;
 });
 
-fs.writeFileSync("configuration.noregion.json", JSON.stringify(cfg, null, 2) + "\n");
+fs.writeFileSync("upstream/configuration.noregion.json", JSON.stringify(cfg, null, 2) + "\n");
 
 console.log(`Kept ${cfg.sources.length} sources`);
 console.log(`Removed ${removed.length} sources:`);
